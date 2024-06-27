@@ -1,19 +1,22 @@
+from mask import get_mask_card_number, get_mask_account
+
+
 def mask_account_card(numbers: str) -> str:
-    """Получаем номер карты или счёта, возвращаем замаскированный"""
+    """Получаем строку с номером карты или счёта, возвращаем замаскированную"""
     parts = numbers.split()
-    if "Счет" in numbers:
+    if 'Счет' in numbers:
         # Маскировка для счёта
-        account_number = numbers.split("Счет ")[1]
-        masked_account = "**" + account_number[-4:]
-        return f"Счёт {masked_account}"
+        account_number = int(parts[1])
+        masked_account = get_mask_account(account_number)
+        return f"Счет {masked_account}"
     elif len(parts) == 2 or len(parts) == 3:
         # Маскировка для карт
-        number = parts[-1]
-        masked_number = number[:4] + " " + number[4:6] + "** **** " + number[-4:]
+        card_number = int(parts[-1])
+        masked_card = get_mask_card_number(card_number)
         if len(parts) == 3:
-            return f"{parts[0]} {parts[1]} {masked_number}"
+            return f"{parts[0]} {parts[1]} {masked_card}"
         else:
-            return f"{parts[0]} {masked_number}"
+            return f"{parts[0]} {masked_card}"
     else:
         return "Неверные данные"
 
@@ -25,6 +28,7 @@ def get_data(date_str: str) -> str:
     return f"{day}.{month}.{year}"
 
 
+# Пример использования
 inputs = [
     "Maestro 1596837868705199",
     "Счет 64686473678894779589",
@@ -33,12 +37,11 @@ inputs = [
     "Visa Classic 6831982476737658",
     "Visa Platinum 8990922113665229",
     "Visa Gold 5999414228426353",
-    "Счет 73654108430135874305",
+    "Счет 73654108430135874305"
 ]
 
+masked_outputs = [mask_account_card(input_str) for input_str in inputs]
+for masked_str in masked_outputs:
+    print(masked_str)
 
-masked_outputs = [mask_account_card(numbers) for numbers in inputs]
-for numbers in masked_outputs:
-    print(numbers)
-
-print(get_data("2018-07-11T02:26:18.671407"))
+print(get_data('2018-07-11T02:26:18.671407'))
