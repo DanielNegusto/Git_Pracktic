@@ -1,10 +1,10 @@
-from mask import get_mask_card_number, get_mask_account
+from mask import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(numbers: str) -> str:
     """Получаем строку с номером карты или счёта, возвращаем замаскированную"""
     parts = numbers.split()
-    if 'Счет' in numbers:
+    if "Счет" in numbers:
         # Маскировка для счёта
         account_number = int(parts[1])
         masked_account = get_mask_account(account_number)
@@ -37,11 +37,11 @@ inputs = [
     "Visa Classic 6831982476737658",
     "Visa Platinum 8990922113665229",
     "Visa Gold 5999414228426353",
-    "Счет 73654108430135874305"
+    "Счет 73654108430135874305",
 ]
 
 masked_outputs = [mask_account_card(input_str) for input_str in inputs]
 for masked_str in masked_outputs:
     print(masked_str)
 
-print(get_data('2018-07-11T02:26:18.671407'))
+print(get_data("2018-07-11T02:26:18.671407"))
