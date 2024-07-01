@@ -20,7 +20,7 @@ def sort_by_date(records: List[Dict[str, Any]], descending: bool = True) -> List
     descending: Порядок сортировки. True для убывания, False для возрастания. По умолчанию True.
     Возвращает новый список словарей, отсортированный по дате.
     """
-    return sorted(records, key=lambda el: get_data(el["date"]), reverse=descending)
+    return sorted(records, key=lambda el: get_data(el["date"]), reverse=not descending)
 
 
 example_data = [
@@ -32,18 +32,18 @@ example_data = [
 
 # Фильтрация данных по статусу 'EXECUTED'
 filtered_data = filter_by_state(example_data)
-print("Filtered Data (EXECUTED):")
+print("Фильтрация по статусу (EXECUTED):")
 for record in filtered_data:
     print(record)
 
 # Сортировка данных по дате в убывающем порядке
 sorted_data = sort_by_date(example_data)
-print("\nSorted Data (Descending):")
+print("\nСортировка в убывающем порядке:")
 for record in sorted_data:
     print(record)
 
 # Сортировка данных по дате в возрастающем порядке
 sorted_data_asc = sort_by_date(example_data, False)
-print("\nSorted Data (Ascending):")
+print("\nСортировка в возрастающем порядке:")
 for record in sorted_data_asc:
     print(record)
