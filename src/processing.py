@@ -43,7 +43,7 @@ for record in sorted_data:
     print(record)
 
 # Сортировка данных по дате в возрастающем порядке
-sorted_data_asc = sort_by_date(example_data, descending=False)
+sorted_data_asc = sort_by_date(example_data, False)
 print("\nSorted Data (Ascending):")
 for record in sorted_data_asc:
     print(record)
