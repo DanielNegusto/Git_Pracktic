@@ -26,3 +26,5 @@ def mask_account_card(numbers: str) -> str:
 
 def get_data(date_str: str) -> datetime:
     return datetime.fromisoformat(date_str)
+
+print(mask_account_card("Unknown 1234567890"))
