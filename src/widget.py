@@ -1,10 +1,13 @@
+from datetime import datetime
+
 from src.mask import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(numbers: str) -> str:
     """Получаем строку с номером карты или счёта, возвращаем замаскированную"""
+    normalized_numbers = numbers.replace("ё", "е").lower()  # Нормализуем строку
     parts = numbers.split()
-    if "Счет" in numbers:
+    if "счет" in normalized_numbers:
         # Маскировка для счёта
         account_number = int(parts[1])
         masked_account = get_mask_account(account_number)
@@ -21,7 +24,7 @@ def mask_account_card(numbers: str) -> str:
         return "Неверные данные"
 
 
-def get_data(date_str: str) -> str:
-    date_part = date_str.split("T")[0]
-    year, month, day = date_part.split("-")
-    return f"{day}.{month}.{year}"
+def get_data(date_str: str) -> datetime:
+    return datetime.fromisoformat(date_str)
+
+print(mask_account_card("Unknown 1234567890"))
