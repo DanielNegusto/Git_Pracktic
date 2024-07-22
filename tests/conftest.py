@@ -62,3 +62,16 @@ def example_data() -> List[Dict[str, Any]]:
         {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
         {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
     ]
+
+
+@pytest.fixture
+def sample_transaction_rub() -> Dict[str, Any]:
+    return {
+        "id": 2,
+        "state": "EXECUTED",
+        "date": "2020-01-01T12:00:00",
+        "operationAmount": {"amount": "5000.00", "currency": {"name": "RUB", "code": "RUB"}},
+        "description": "Test transaction",
+        "from": "Account 1",
+        "to": "Account 2",
+    }
