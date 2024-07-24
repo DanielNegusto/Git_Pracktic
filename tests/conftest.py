@@ -75,3 +75,13 @@ def sample_transaction_rub() -> Dict[str, Any]:
         "from": "Account 1",
         "to": "Account 2",
     }
+
+
+@pytest.fixture
+def transaction_usd() -> Dict[str, Any]:
+    return {"operationAmount": {"amount": "100.00", "currency": {"code": "USD"}}}
+
+
+@pytest.fixture
+def transaction_rub() -> Dict[str, Any]:
+    return {"operationAmount": {"amount": "5000.00", "currency": {"code": "RUB"}}}

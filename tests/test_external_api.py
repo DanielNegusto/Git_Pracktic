@@ -1,45 +1,50 @@
 import os
-from unittest.mock import Mock
+from typing import Any, Dict
+from unittest.mock import patch
 
 import pytest
 from dotenv import load_dotenv
 
 from src.external_api import convert_to_rub
 
-# Загрузка переменных окружения из файла .env
 load_dotenv()
 
 API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
 
 
-def test_convert_to_rub_with_rub_currency(monkeypatch: Mock) -> None:
-    transaction = {"operationAmount": {"amount": "100", "currency": {"code": "RUB"}}}
-    monkeypatch.setattr(
-        "requests.get", Mock(return_value=Mock(status_code=200, json=Mock(return_value={"result": "100"})))
+@patch("src.external_api.requests.get")
+def test_convert_to_rub_usd(mock_get: Any, transaction_usd: Dict[str, Any]) -> None:
+    # Настройка мока для успешного ответа
+    mock_response = {"result": "7500.00"}
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = mock_response
+
+    # Вызов функции
+    result = convert_to_rub(transaction_usd)
+
+    # Проверка результата
+    assert result == 7500.0
+    mock_get.assert_called_once_with(
+        "https://api.apilayer.com/exchangerates_data/convert",
+        params={"to": "RUB", "from": "USD", "amount": "100.0"},
+        headers={"apikey": API_KEY},
     )
-    assert convert_to_rub(transaction) == 100
 
 
-def test_convert_to_rub_with_usd_currency(monkeypatch: Mock) -> None:
-    transaction = {"operationAmount": {"amount": "100", "currency": {"code": "USD"}}}
-    monkeypatch.setattr(
-        "requests.get", Mock(return_value=Mock(status_code=200, json=Mock(return_value={"result": "6000"})))
-    )
-    assert convert_to_rub(transaction) == 6000
+def test_convert_to_rub_rub(transaction_rub: Dict[str, Any]) -> None:
+    # Вызов функции без мока, так как RUB не требует внешнего вызова
+    result = convert_to_rub(transaction_rub)
+
+    # Проверка результата
+    assert result == 5000.0
 
 
-def test_convert_to_rub_with_eur_currency(monkeypatch: Mock) -> None:
-    transaction = {"operationAmount": {"amount": "100", "currency": {"code": "EUR"}}}
-    monkeypatch.setattr(
-        "requests.get", Mock(return_value=Mock(status_code=200, json=Mock(return_value={"result": "6400"})))
-    )
-    assert convert_to_rub(transaction) == 6400
+@patch("src.external_api.requests.get")
+def test_convert_to_rub_api_error(mock_get: Any, transaction_usd: Dict[str, Any]) -> None:
+    # Настройка мока для ответа с ошибкой
+    mock_response = {"error": "API error"}
+    mock_get.return_value.status_code = 400
+    mock_get.return_value.json.return_value = mock_response
 
-
-def test_convert_to_rub_with_unknown_currency(monkeypatch: Mock) -> None:
-    transaction = {"operationAmount": {"amount": "100", "currency": {"code": "UNKNOWN"}}}
-    monkeypatch.setattr(
-        "requests.get", Mock(return_value=Mock(status_code=400, json=Mock(return_value={"error": "Unknown error"})))
-    )
-    with pytest.raises(ValueError):
-        convert_to_rub(transaction)
+    with pytest.raises(ValueError, match="Error in API request: API error"):
+        convert_to_rub(transaction_usd)
