@@ -9,12 +9,12 @@ def mask_account_card(numbers: str) -> str:
     parts = numbers.split()
     if "счет" in normalized_numbers:
         # Маскировка для счёта
-        account_number = int(parts[1])
+        account_number = parts[1]
         masked_account = get_mask_account(account_number)
         return f"Счет {masked_account}"
     elif len(parts) == 2 or len(parts) == 3:
         # Маскировка для карт
-        card_number = int(parts[-1])
+        card_number = parts[-1]
         masked_card = get_mask_card_number(card_number)
         if len(parts) == 3:
             return f"{parts[0]} {parts[1]} {masked_card}"

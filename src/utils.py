@@ -1,7 +1,7 @@
 import json
+import logging
 import os
 from typing import Any, Dict, List
-import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
