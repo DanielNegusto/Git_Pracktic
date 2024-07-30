@@ -182,5 +182,21 @@ amount_in_rub = convert_to_rub(100.0, "USD")
 amount (float): Сумма в исходной валюте.
 currency (str): Код исходной валюты (например, 'USD', 'EUR').
 ### Возвращает:
+Сумма в рублях.
 
-float: Сумма в рублях.
+## Чтение файлов
+### Модуль utils.py
+#### функция read_transactions
+```python
+from src.utils import read_transactions
+read_transactions(file_path="Ваш путь до файла")
+```
+Функция читает файлы с расширением .json .csv .xlsx,
+и возвращает список словарей.
+#### функция save_transactions
+```python
+from src.utils import read_transactions, save_transactions
+transactions = read_transactions(file_path="Ваш путь до файла")
+save_transactions(transactions, file_path='Ваш путь до файла')
+```
+Функция сохраняет ваш список словарей в файл который вы укажете в пути до файла
