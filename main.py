@@ -1,11 +1,10 @@
-from src.mask import get_mask_account, get_mask_card_number
-from src.utils import read_transactions
+from src.utils import read_transactions, save_transactions
+from src.widget import mask_account_card
 
 
 def main() -> None:
-    print(get_mask_card_number("1234567890123456"))
-    print(get_mask_account("12345678901234567890"))
-    print(read_transactions("src/data/operations.json"))
+    transactions = read_transactions('data/transactions.csv')
+    print(mask_account_card(transactions[2]["from"]))
 
 
 if __name__ == "__main__":
