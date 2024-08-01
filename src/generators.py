@@ -7,7 +7,7 @@ def filter_by_currency(transit: List[Dict], currency: str) -> Iterator[Dict]:
     currency: Код валюты для фильтрации (например, 'USD').
     Возвращает итератор, который поочередно выдаёт транзакции, где валюта соответствует заданной.
     """
-    return (el for el in transit if el.get("operationAmount", {}).get("currency", {}).get("code") == currency)
+    return (el for el in transit if el.get("currency_code") == currency)
 
 
 def transaction_descriptions(transact: List[Dict]) -> Iterator[str]:

@@ -37,7 +37,7 @@ def test_read_transactions_csv(setup_files: Generator) -> None:
     with open("data/test_operations.csv", "w", encoding="utf-8") as file:
         file.write(data)
     transactions = read_transactions("data/test_operations.csv")
-    assert transactions == [{"id": "1", "state": "EXECUTED"}]
+    assert transactions == [{"id": 1, "state": "EXECUTED"}]
 
 
 def test_read_transactions_xlsx(setup_files: Generator) -> None:
