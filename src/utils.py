@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Any, Dict, List, Hashable
+from typing import Any, Dict, Hashable, List
 
 import pandas as pd
 
@@ -28,12 +28,10 @@ def read_transactions(file_path: str) -> list[Any] | list | list[dict[Hashable, 
                 else:
                     logger.warning("Содержимое JSON-файла не является списком")
         elif file_path.endswith(".csv"):
-            df = pd.read_csv(file_path, sep=";", dtype=str, on_bad_lines="skip")
-            # Удаление строк, которые не имеют всех необходимых полей
-            df.dropna(inplace=True)
+            df = pd.read_csv(file_path, delimiter=";").dropna()
             return df.to_dict(orient="records")
         elif file_path.endswith(".xlsx"):
-            df = pd.read_excel(file_path)
+            df = pd.read_excel(file_path).dropna()
             return df.to_dict(orient="records")
         else:
             logger.error("Неподдерживаемый формат файла")
