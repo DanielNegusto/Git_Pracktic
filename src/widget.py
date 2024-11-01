@@ -24,5 +24,6 @@ def mask_account_card(numbers: str) -> str:
         return "Неверные данные"
 
 
-def get_data(date_str: str) -> datetime:
-    return datetime.fromisoformat(date_str)
+def get_data(date_str: str) -> str:
+    date = datetime.fromisoformat(date_str)
+    return date.strftime("%d.%m.%Y")
